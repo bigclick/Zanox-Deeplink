@@ -1,31 +1,11 @@
 <?php
 /* -------------------------------------------------------------------------------------
-* 	ID:						Id: class.zanox_api.php
-* 	zuletzt geaendert von:	Author: danielsiekiera
-* 	Datum:					Date: 21.12.16
+* 	ID:			class.zanox_api.php
+* 	zuletzt geaendert von:	danielsiekiera
+* 	Datum:			21.12.16
 *
-* 	BigClick GmbH & Co.KG
-* 	http://www.big-click.com
-*
-* 	Copyright (c) 2016 BigClick GmbH & Co.KG
+* 	Based on the Script from https://github.com/rtrompier/Zanox-Deeplink-API
 * ----------------------------------------------------------------------------------- 
-
-
-require_once 'class.zanox_api.php';
-
-try {
-    $zanoxDeepLink = new ZanoxDeepLink('LOGIN', 'PASSWORD', 'ADSPACE', 'ADVERTISER');
-    echo $zanoxDeepLink->getDeeplink('PRODUCT_URL');
-
-} catch (Exception $e) {
-    echo 'Error : ',  $e->getMessage(), "\n";
-}
-
-Login:	partner@bmvbw.de
-Pass:	PW_zanox2011
-ADSPACE: 2161978
-ltur ADVERTISER: 3398
-
 */
 
 
