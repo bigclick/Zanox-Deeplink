@@ -1,6 +1,6 @@
 <?php
 /* -------------------------------------------------------------------------------------
-* 	ID:			class.zanox_api.php
+* 	ID:				class.zanox_api.php
 * 	zuletzt geaendert von:	danielsiekiera
 * 	Datum:			21.12.16
 *
@@ -13,6 +13,7 @@ class ZanoxDeepLink{
     var $dataConnection;
     var $dataDeepLink;
     var $redirectUrl;
+    var $tmp_folder = '/tmp/';
     var $cookieFile;
 
     function __construct($login, $password, $zanoxAdspace, $zanoxAdvertiser = '') {
@@ -28,12 +29,12 @@ class ZanoxDeepLink{
 
         $this->dataConnection = array(
             'email' => $login,
-	    'password' => $password,
-	    'Login' => ''
+	    	'password' => $password,
+	    	'Login' => ''
         );
         
         
-        $this->cookieFile = ABS_PATH_FILE_CACHE."cookieZanoxDeeplink".rand(99, 999999999);
+        $this->cookieFile = $this->tmp_filder."cookieZanoxDeeplink".rand(99, 999999999);
 
         $this->dataDeepLink = array(
             'sLanguage' => '2',
@@ -60,9 +61,8 @@ class ZanoxDeepLink{
         $this->getToken();
         $deeplink = $this->parseDeeplink($postDeeplink);
 
-	// remove cookie
-	unlink($this->cookieFile);
-
+		// remove cookie
+		unlink($this->cookieFile);
         return $deeplink;
     }
 
@@ -85,14 +85,14 @@ class ZanoxDeepLink{
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
-	curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);            
-	curl_setopt($ch, CURLOPT_HEADER, 1);
+		curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);            
+		curl_setopt($ch, CURLOPT_HEADER, 1);
         
-        ob_start();      // prevent any output
-        $tmp = curl_exec($ch); // execute the curl command
+        ob_start();
+        $tmp = curl_exec($ch);
         $header = curl_getinfo($ch);
         $this->redirectUrl = $header['redirect_url'];
-        $html = ob_get_clean();  // stop preventing output
+        $html = ob_get_clean();
         curl_close ($ch);
         
         unset($ch);
@@ -110,21 +110,21 @@ class ZanoxDeepLink{
         curl_setopt($ch, CURLOPT_URL, $this->redirectUrl);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 
-        ob_start();      // prevent any output
+        ob_start();
         curl_exec ($ch);            
 		$header = curl_getinfo($ch);
         $html = ob_get_clean();
         curl_close ($ch);
         
         if (isset($header['redirect_url'])){
-            // get next token
+
 			$ch = curl_init();
             curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);            
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
 	        curl_setopt($ch, CURLOPT_URL, $header['redirect_url']);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			
-			ob_start();      // prevent any output
+			ob_start();
 			curl_exec ($ch);            
 			$header = curl_getinfo($ch);
 	        $html = ob_get_clean();
