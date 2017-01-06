@@ -27,13 +27,9 @@ class ZanoxDeepLink{
         }
 
         $this->dataConnection = array(
-            /*'loginForm.loginViaUserAndPassword' => 'true',
-            'loginForm.userName' => $login,
-            'loginForm.password' => $password
-            */
             'email' => $login,
-			'password' => $password,
-			'Login' => ''
+	    'password' => $password,
+	    'Login' => ''
         );
         
         
@@ -62,11 +58,10 @@ class ZanoxDeepLink{
 
         $this->connection($postConnection);
         $this->getToken();
-        //echo "got token";
         $deeplink = $this->parseDeeplink($postDeeplink);
 
-		// remove cookie
-		unlink($this->cookieFile);
+	// remove cookie
+	unlink($this->cookieFile);
 
         return $deeplink;
     }
@@ -84,16 +79,14 @@ class ZanoxDeepLink{
     private function connection($data){
         $ch = curl_init();
         $url = "https://marketplace.zanox.com/login?appid=A5B83584B42A666E5309";
-        //$url = "https://auth.zanox.com/connect/login?appid=A5B83584B42A666E5309";
-        //$url = "https://auth.zanox.com/login?appid=A5B83584B42A666E5309";
         
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);            
-		curl_setopt($ch, CURLOPT_HEADER, 1);
+	curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);            
+	curl_setopt($ch, CURLOPT_HEADER, 1);
         
         ob_start();      // prevent any output
         $tmp = curl_exec($ch); // execute the curl command
@@ -142,7 +135,6 @@ class ZanoxDeepLink{
 
     private function parseDeeplink($postDeeplink){
         $ch = curl_init();
-        //print_r($postDeeplink);
         
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);            
